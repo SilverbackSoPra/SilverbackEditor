@@ -1,21 +1,54 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Diagnostics;
+using System.Runtime.Remoting.Messaging;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Monogame_Engine.Engine;
+using Monogame_Engine.Engine.Mesh;
+using Monogame_Engine.Engine.Renderer;
 
 namespace LevelEditor
 {
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game1 : Game
+    public class Main : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        private readonly GraphicsDeviceManager mGraphics;
 
-        public Game1()
+        private readonly Camera mCamera;
+        private readonly Scene mScene;
+        private readonly Light mLight;
+        private readonly RenderTarget mRenderTarget;
+
+        private MasterRenderer mMasterRenderer;
+
+
+        private Mesh mMesh;
+        private Actor mActor;
+
+
+
+        public Main()
         {
-            graphics = new GraphicsDeviceManager(this);
+            mGraphics = new GraphicsDeviceManager(this);
+
+            // You have to set the graphics profile to HiDef in every project
+            // to use custom shader
+            mGraphics.GraphicsProfile = GraphicsProfile.HiDef;
+
+            mCamera = new Camera(fieldOfView: 55.0f, aspectRatio: 2.0f, nearPlane: 1.0f, farPlane: 200.0f);
+            mCamera.UpdatePerspective();
+
+            mScene = new Scene();
+            mLight = new Light();
+
+            mRenderTarget = new RenderTarget(mGraphics.GraphicsDevice, 1920, 1080, 4096);
+
+            mScene.Add(mLight);
+
             Content.RootDirectory = "Content";
+          
         }
 
         /// <summary>
@@ -37,10 +70,28 @@ namespace LevelEditor
         /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            
 
             // TODO: use this.Content to load your game content here
+            Model model = Content.Load<Model>("blabla");
+            mMesh = new Mesh(model);
+
+            mActor = new Actor(mMesh);
+            mActor.mModelMatrix = Matrix.CreateTranslation(1.0f, 2.0f, 2.0f);
+
+            mMasterRenderer = new MasterRenderer(mGraphics.GraphicsDevice, Content);
+
+            /*
+            for (uint i = 0; i < 1000; i++)
+            {
+                Actor actor = new Actor(mMesh);
+                actor.mMesh = Matrix.CreateTranslation(2.0f, 2.0f, 2.0f);
+                mScene.Add(actor);
+            }
+            */
+
+            mScene.Add(mActor);
+
         }
 
         /// <summary>
@@ -63,6 +114,7 @@ namespace LevelEditor
                 Exit();
 
             // TODO: Add your update logic here
+            mCamera.UpdateView();
 
             base.Update(gameTime);
         }
@@ -73,9 +125,10 @@ namespace LevelEditor
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            
+            mCamera.mLocation = new Vector3(0.0f, 0.0f, -10.0f);
 
-            // TODO: Add your drawing code here
+            mMasterRenderer.Render(mRenderTarget, mCamera, mScene);
 
             base.Draw(gameTime);
         }

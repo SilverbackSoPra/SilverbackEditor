@@ -13,3 +13,18 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Shader/.git
+/copy:Shader/.git
+
+#begin Shader/Forward.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shader/Forward.fx
+
+#begin Shader/PostProcess.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shader/PostProcess.fx
+
