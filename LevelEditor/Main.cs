@@ -23,11 +23,8 @@ namespace LevelEditor
 
         private MasterRenderer mMasterRenderer;
 
-
         private Mesh mMesh;
         private Actor mActor;
-
-
 
         public Main()
         {

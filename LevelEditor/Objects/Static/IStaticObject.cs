@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Monogame_Engine.Engine.Mesh;
 
 namespace LevelEditor.Objects.Static
 {
-    interface IStaticObject
+    internal abstract class IStaticObject
     {
+        private Mesh mesh;
     }
 }
