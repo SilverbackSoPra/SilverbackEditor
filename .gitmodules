@@ -1,0 +1,6 @@
+[submodule "Engine"]
+	path = LevelEditor/Engine
+	url = https://github.com/SilverbackSoPra/Engine.git
+[submodule "Shader"]
+	path = LevelEditor/Content/Shader
+	url = https://github.com/SilverbackSoPra/Shader.git
