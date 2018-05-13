@@ -57,7 +57,9 @@ namespace LevelEditor
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
+            
+            landscape = new Terrain(GraphicsDevice);
+            
             base.Initialize();
         }
 
@@ -77,6 +79,11 @@ namespace LevelEditor
             mActor.mModelMatrix = Matrix.CreateTranslation(1.0f, 2.0f, 2.0f);
 
             mMasterRenderer = new MasterRenderer(mGraphics.GraphicsDevice, Content);
+
+
+            
+            //load heightMap and heightMapTexture to create landscape
+           landscape.SetHeightMapData(Content.Load<Texture2D>("heightMap"), Content.Load<Texture2D>("heightMapTexture"));
 
             /*
             for (uint i = 0; i < 1000; i++)
@@ -126,6 +133,10 @@ namespace LevelEditor
             mCamera.mLocation = new Vector3(0.0f, 0.0f, -10.0f);
 
             mMasterRenderer.Render(mRenderTarget, mCamera, mScene);
+
+            GraphicsDevice.Clear(Color.CornflowerBlue); 
+            // to get landscape viewable
+            camera.Draw(landscape);
 
             base.Draw(gameTime);
         }
